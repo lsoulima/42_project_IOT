@@ -3,7 +3,8 @@
 # installation 
 
 
-yum install -y container-selinux selinux-policy-base vim
+yum update -y
+yum install -y container-selinux selinux-policy-base
 rpm -i https://rpm.rancher.io/k3s-selinux-0.1.1-rc1.el7.noarch.rpm
 curl -sfL https://get.k3s.io | sh -
 
@@ -16,15 +17,6 @@ sudo vim /etc/systemd/system/k3s.service
 
 sudo systemctl daemon-reload
 sudo systemctl restart k3s
-
-kubectl apply -f .
-kubectl wait --for=condition=complete job/helm-install-traefik-crd
-kubectl wait --for=condition=complete job/helm-install-traefik
-
-# clear 
-kubectl delete deploy --all
-kubectl delete svc --all
-kubectl delete ingress --all
 
 # installation de kubectl
 # We will need to add Kubernetes repositories manually as they do not come installed by default on CentOS 8.
@@ -42,6 +34,10 @@ EOF
 
 yum install -y kubectl
 
+
+kubectl wait --for=condition=complete job/helm-install-traefik-crd -n kube-system
+kubectl wait --for=condition=complete job/helm-install-traefik -n kube-system
+kubectl apply -f .
 
 # certificat
 
@@ -61,3 +57,7 @@ kubectl get nodes
 # --kubeconfig=/etc/rancher/k3s/k3s.yaml
 # ou run avec --write-kubeconfig-mode
 
+# clear 
+kubectl delete deploy --all
+kubectl delete svc --all
+kubectl delete ingress --all
