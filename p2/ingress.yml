@@ -1,0 +1,29 @@
+
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: hello-ingress
+  annotations:
+    kubernetes.io/ingress.class: traefik
+    traefik.frontend.rule.type: PathPrefixStrip
+spec:
+  rules:
+  - http:
+      paths:
+      - pathType: Prefix
+        path: /hw1 # by path
+        backend:
+          service:
+            name: hello-un
+            port: 
+              number: 80
+  - host: hw2.kub # by host header
+    http:
+      paths:
+      - pathType: Prefix
+        path: /
+        backend:
+          service:
+            name: hello-deux
+            port: 
+              number: 80
