@@ -21,8 +21,10 @@ sudo systemctl restart k3s
 
 
 # installation de kubectl
+# We will need to add Kubernetes repositories manually as they do not come installed by default on CentOS 8.
 
-cat <<EOF > /etc/yum.repos.d/kubernetes.repo
+# Pass multi-line string to a file in Bash
+cat <<EOF > /etc/yum.repos.d/kubernetes.repo  
 [kubernetes]
 name=Kubernetes
 baseurl=https://packages.cloud.google.com/yum/repos/kubernetes-el7-x86_64
